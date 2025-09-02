@@ -107,14 +107,18 @@ const login = async (req, res) => {
 };
 
 const getUserProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching profile", error });
-  }
-};
+ try{
+  const user = await User.findById(req.user.id).select("-password")
 
+  if(!user){
+    return res.json({success : false , message : "User not found"})
+  }
+  res.json(user)
+}
+catch(err){
+  return res.json({success : false , message  :err.message})
+}
+}
 
 
 const updateUserProfile = async (req, res) => {};
