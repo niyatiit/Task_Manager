@@ -18,7 +18,7 @@ const protect = async (req, res, next) => {
       return res.json({ success: false, message: "No Authorized No Token" });
     }
   } catch (err) {
-    return res.json({ success: false, message: err.message });
+    return res.json({ success: false, message: "Invalid or expired token" });
   }
 };
 

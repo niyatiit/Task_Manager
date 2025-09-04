@@ -1,12 +1,20 @@
-import {Router} from 'express'
-import { getUserProfile, login, register, updateUserProfile } from '../controller/Auth.Controller.js';
-import { adminOnly, protect } from '../middleware/Auth.Middleware.js';
+import { Router } from "express";
+import {
+  getUserProfile,
+  login,
+  register,
+  updateUserProfile,
+  uploadImage,
+} from "../controller/Auth.Controller.js";
+import { adminOnly, protect } from "../middleware/Auth.Middleware.js";
+import { upload } from "../middleware/Uploaded.Middlware.js";
 
-const userRouter = Router();
+const authRouter = Router();
 
-userRouter.route('/register').post(register) //Registration User
-userRouter.route('/login').post(login) // Login User
-userRouter.route('/profile').get(protect , getUserProfile) // Get User Profile
-userRouter.route('/profile').put(adminOnly,updateUserProfile) // Update Profile 
+authRouter.route("/register").post(register); //Registration User
+authRouter.route("/login").post(login); // Login User
+authRouter.route("/profile").get(protect, getUserProfile); // Get User Profile
+authRouter.route("/profile").put(protect, updateUserProfile); // Update Profile
+authRouter.route("/upload-image").post(upload.single("image"), uploadImage);
 
-export {userRouter}
+export { authRouter };
