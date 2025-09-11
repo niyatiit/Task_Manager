@@ -17,7 +17,6 @@ import MyTask from "./pages/user/MyTask";
 const App = () => {
   return (
     <>
-    <h1> This is App File </h1>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

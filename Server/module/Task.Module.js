@@ -27,23 +27,24 @@ const taskSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      required: true,
+      enum: ["Pending", "In Progress", "Completed"],
+      default: "Pending",
     },
     dueDate: {
       type: Date,
       required: true,
     },
-    assigneTo: {
+    assigneTo: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    },
+    }],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    attachment: {
+    attachment: [{
       type: String,
-    },
+    }],
     todoCheckList: [todoSchema],
     progress: {
       type: Number,

@@ -5,6 +5,8 @@ import cors from "cors";
 import { dataBase } from "./config/db.js";
 import { authRouter } from "./routes/Auth.Route.js";
 import { userRouter } from "./routes/User.Route.js";
+import { taskRouter } from "./routes/Task.Route.js";
+import { reportRouter } from "./routes/Report.Route.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +26,8 @@ app.get("/", (req, res) => {
 // ✅ Auth routes (already includes /register, /login, /profile)
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/task",taskRouter)
+app.use("/api/report",reportRouter)
 
 // catch-all for unknown routes
 app.use((req, res) => {

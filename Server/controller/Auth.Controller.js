@@ -37,14 +37,14 @@ const register = async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "2d",
+      expiresIn: "7d",
     });
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 2 * 24 * 60 * 60 * 1000, // ✅ number, 2 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ✅ number, 7 days
     });
 
     return res.json({
@@ -95,14 +95,14 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ id: existUser._id }, process.env.SECRET_KEY, {
-      expiresIn: "2d",
+      expiresIn: "7d",
     });
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 2 * 24 * 60 * 60 * 1000, // ✅ number, 2 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ✅ number, 2 days
     });
 
     return res.json({
