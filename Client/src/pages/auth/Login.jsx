@@ -1,68 +1,96 @@
 import React, { useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
-import { Link, useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom'
 
-const Login = () => {
+export const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate("");
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {};
 
-    // if(!emailRegex.test(email)){
-    //   setError("Invlid Syntax Please Renter the Email ");
-    //   return;
-    // }
+    // Email Checking
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Invlaid Email Formate";
+    }
 
-    // if(!passwordRegex.test(password)){
-    //   setError("Please Enter the password must be 8 unque charcater ");
-    //   return;
-    // }
-    // setError("")
+    // Password Checking
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be least 8 character";
+    }
+
+    
+    setError(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      alert("Login Successfull");
+      setEmail("");
+      setPassword("");
+    }
   };
   return (
-    <AuthLayout>
-      <h1 className="pt-5 font-semibold text-2xl"> Welcome Back !! </h1>
-      <p className="pt-2 pb-3">Please Enter Your Details To Loggin. </p>
-      <form onSubmit={handleSubmit}>
-      <label className="text-0.5xl font-semibold "> Email Address </label> <br></br>
-      <input
-        type="email"
-        placeholder="abc@example.com"
-        className="p-3 border-1 font-bold rounded-md w-[100%]"
-        required
-        rounded-md
-      />
-      <br></br>
-      <label className="text-0.5xl font-semibold pb-3 pt-3 "> Password </label> <br></br>
-      <input
-        type="password "
-        placeholder="Min 8 Character are available "
-        className="p-3 border-1 font-bold rounded-md w-[100%]"
-        required
-        rounded-md
-      />
-      <br></br>
-      <input
-        type="submit"
-        className="text-0.5xl font-semibold pb-3 pt-3 bg-blue-500 text-white mt-5 rounded-md hover:bg-blue-600 cursor-pointer
-"
-      />
-      <p className="font-semibold pb-3 pt-5">
-        Don't Have Any Account ? then{" "}
-        <Link className="text-blue-700 hover:underline" to="/signup">
-          {" "}
-          SignUp{" "}
-        </Link>{" "}
-      </p>
-      </form>
-    </AuthLayout>
+    <>
+      <AuthLayout>
+        <div className="p-4">
+          <h1 className="text-2xl font-bold">Welcome Back !!</h1>
+          <p className="pb-3">Please Enter Your Details to Login.</p>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label className="font-semibold">Email</label>
+              <br />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border-1 p-2 w-full rounded-lg focus:outline-none focus:ring-0"
+                placeholder="abc@gmail.com"
+              />
+              {error.email && (
+                <p className="text-red-500 text-sm"> {error.email}</p>
+              )}
+            </div>
+            <div className="pt-3 relative">
+              <label className="font-semibold">Password</label>
+              <br />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                className="border-1 p-2 w-full rounded-lg focus:outline-none focus:ring-0"
+                placeholder="Min 8 Characters Required"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {error.password && (<p className="text-red-500 text-sm">{error.password} </p>)}
+              <button
+                type="button"
+                onClick={togglePassword}
+                className="absolute right-3 top-12 text-sm text-blue-600 hover:cursor-pointer text-blue-800"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <div className="pt-3">
+              <input
+                type="submit"
+                value="Login"
+                className="border-1 p-2 w-full rounded-lg bg-blue-600 font-bold text-white hover:cursor-pointer hover:bg-blue-700"
+              />
+            </div>
+          </form>
+          <p className="pt-5"> Don't have an account ? <Link to="/signup"className="text-blue-600 hover:underline cursor-pointer "> SignUp </Link></p>
+        </div>
+      </AuthLayout>
+    </>
   );
 };
 
